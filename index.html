@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Quotes</title>
+    <style>
+        /* Center everything on the page */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4e6;
+            color: #333;
+        }
+
+        /* Style for the heading */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        /* Style for the email input and buttons */
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="email"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 250px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style for the unsubscribe button */
+        button.unsubscribe {
+            background-color: #dc3545;
+        }
+
+        button.unsubscribe:hover {
+            background-color: #a71d2a;
+        }
+
+        /* Style for the message display */
+        #message {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #007bff;
+        }
+
+        /* Style for the image */
+        .quote-image {
+            width: 50%; /* Reduce image size to 50% */
+            height: auto;
+            margin-top: 5px; /* Increased space above the image */
+            margin-bottom: 5px; /* Increased spacing below the image */
+        }
+    </style>
+</head>
+<body>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/Capriccio_with_Roman_Ruins_MET_DP801517.jpg" alt="Historical Image" class="quote-image">
+    <h1>Historical Quotes</h1>
+    <div class="input-group">
+        <input type="email" id="email" placeholder="Enter your email">
+        <button onclick="subscribe()">Subscribe</button>
+        <button class="unsubscribe" onclick="unsubscribe()">Unsubscribe</button>
+    </div>
+    <p id="message"></p>
+
+    <script>
+        // Function to handle subscription
+        function subscribe() {
+            const email = document.getElementById('email').value;
+            if (validateEmail(email)) {
+                // Simulate API call to backend
+                fetch('/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message || 'Subscribed successfully!';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('message').textContent = 'Failed to subscribe. Please try again.';
+                });
+            } else {
+                document.getElementById('message').textContent = 'Please enter a valid email address.';
+            }
+        }
+
+        // Function to handle unsubscription
+        function unsubscribe() {
+            const email = document.getElementById('email').value;
+            if (validateEmail(email)) {
+                // Simulate API call to backend
+                fetch('/unsubscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('message').textContent = data.message || 'Unsubscribed successfully!';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('message').textContent = 'Failed to unsubscribe. Please try again.';
+                });
+            } else {
+                document.getElementById('message').textContent = 'Please enter a valid email address.';
+            }
+        }
+
+        // Function to validate email format
+        function validateEmail(email) {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+    </script>
+</body>
+</html>
